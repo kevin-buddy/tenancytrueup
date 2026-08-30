@@ -64,17 +64,17 @@
 
       <div class="mt-8 flex flex-wrap gap-3">
         <a
-          href="/buildings"
+          href="/master-data"
           class="rounded-2xl bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-5 py-3 text-sm font-bold text-zinc-950 shadow-lg shadow-orange-500/20 transition hover:opacity-95"
         >
-          Go to Buildings
+          Go to Master Data
         </a>
 
         <a
-          href="/reconciliations"
+          href="/pro-rata"
           class="rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/10"
         >
-          Go to Reconciliations
+          Go to Pro-Rata Engine
         </a>
       </div>
     </div>

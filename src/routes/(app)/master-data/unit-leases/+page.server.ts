@@ -8,20 +8,20 @@ export const load: PageServerLoad = async () => {
   const [leaseUnitsResponse, leasesResponse, unitsResponse] = await Promise.all([
     supabaseAdmin
       .from('personal_project_tenancytrueup_units_leases')
-      .select('*, lease:personal_project_tenancytrueup_units_leases_lease_id_fkey!inner(lease_number, personal_project_tenancytrueup_tenants(name)), unit:personal_project_tenancytrueup_units_leases_unit_id_fkey!inner(suite_number, personal_project_tenancytrueup_buildings(name))')
+      .select('*, leases:personal_project_tenancytrueup_units_leases_lease_id_fkey!inner(lease_number, tenants:personal_project_tenancytrueup_leases_tenant_id_fkey!inner(name)), units:personal_project_tenancytrueup_units_leases_unit_id_fkey!inner(suite_number, buildings:personal_project_tenancytrueup_units_building_id_fkey!inner(name))')
       .order('start_date', { ascending: false }),
 
     supabaseAdmin
       .from('personal_project_tenancytrueup_leases')
-      .select('id, lease_number, personal_project_tenancytrueup_tenants(name)')
+      .select('id, lease_number, tenants:personal_project_tenancytrueup_leases_tenant_id_fkey!inner(name)')
       .order('created_at', { ascending: false }),
 
     supabaseAdmin
       .from('personal_project_tenancytrueup_units')
-      .select('id, suite_number, personal_project_tenancytrueup_buildings(name)')
+      .select('id, suite_number, buildings:personal_project_tenancytrueup_units_building_id_fkey!inner(name)')
       .order('suite_number', { ascending: true })
   ]);
-
+  console.log('leaseUnitsResponse:', leaseUnitsResponse.data);
   if (leaseUnitsResponse.error || leasesResponse.error || unitsResponse.error) {
     console.error('Error loading unit leases:', leaseUnitsResponse.error?.message || leasesResponse.error?.message || unitsResponse.error?.message);
     throw error(500, 'Unable to load unit leases.');

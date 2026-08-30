@@ -127,7 +127,8 @@
                 <td class="px-3 py-3"
                   >{leaseUnit.leases?.tenants?.name ?? "-"}</td
                 >
-                <td class="px-3 py-3">{leaseUnit.units?.code ?? "-"}</td>
+                <td class="px-3 py-3">{leaseUnit.units?.suite_number ?? "-"}</td
+                >
                 <td class="px-3 py-3"
                   >{leaseUnit.units?.buildings?.name ?? "-"}</td
                 >

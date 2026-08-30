@@ -8,11 +8,11 @@ import { getDate, getString } from '$lib/server/form';
 
 export const load: PageServerLoad = async () => {
   const [buildingsResponse, runsResponse] = await Promise.all([
-    supabaseAdmin.from('buildings').select('id, name').order('name'),
+    supabaseAdmin.from('personal_project_tenancytrueup_buildings').select('id, name').order('name'),
 
     supabaseAdmin
-      .from('pro_rata_runs')
-      .select('*, buildings(name)')
+      .from('personal_project_tenancytrueup_pro_rata_runs')
+      .select('*, buildings:personal_project_tenancytrueup_pro_rata_runs_building_id_fkey!inner(name)')
       .order('created_at', { ascending: false })
       .limit(20)
   ]);
@@ -103,7 +103,7 @@ export const actions: Actions = {
       }
 
       const { data: run, error: runError } = await supabaseAdmin
-        .from('pro_rata_runs')
+        .from('personal_project_tenancytrueup_pro_rata_runs')
         .insert({
           building_id: buildingId,
           period_start_date: startDate,
@@ -129,7 +129,7 @@ export const actions: Actions = {
 
       if (preview.lines.length > 0) {
         const { error: linesError } = await supabaseAdmin
-          .from('pro_rata_run_lines')
+          .from('personal_project_tenancytrueup_pro_rata_run_lines')
           .insert(
             preview.lines.map((line) => ({
               run_id: run.id,
@@ -155,7 +155,7 @@ export const actions: Actions = {
       if (err instanceof Error && err.message.includes('redirect')) {
         throw err;
       }
-
+      console.error('Error committing pro-rata calculation:', err);
       return fail(500, {
         error: err instanceof Error ? err.message : 'Unable to commit calculation.'
       });

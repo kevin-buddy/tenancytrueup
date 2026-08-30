@@ -7,7 +7,7 @@ import { getDate, getOptionalNumber, getString } from '$lib/server/form';
 export const load: PageServerLoad = async ({ params }) => {
   const { data: lease, error: leaseError } = await supabaseAdmin
     .from('personal_project_tenancytrueup_leases')
-    .select('*, tenant:personal_project_tenancytrueup_leases_tenant_id_fkey!inner(name), building:personal_project_tenancytrueup_leases_building_id_fkey!inner(name)')
+    .select('*, tenants:personal_project_tenancytrueup_leases_tenant_id_fkey!inner(name), buildings:personal_project_tenancytrueup_leases_building_id_fkey!inner(name)')
     .eq('id', params.id)
     .maybeSingle();
 
@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ params }) => {
   const [leaseUnitsResponse, unitsResponse] = await Promise.all([
     supabaseAdmin
       .from('personal_project_tenancytrueup_units_leases')
-      .select('*, personal_project_tenancytrueup_units(id, suite_number, name, rentable_area, usable_area)')
+      .select('*, units:personal_project_tenancytrueup_units_leases_unit_id_fkey!inner(id, suite_number, name, rentable_area, usable_area)')
       .eq('lease_id', lease.id)
       .order('created_at', { ascending: false }),
 

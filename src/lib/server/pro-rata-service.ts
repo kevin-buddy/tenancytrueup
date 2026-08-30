@@ -42,7 +42,7 @@ export async function getProRataPreview(
   const warnings: string[] = [];
 
   const { data: building, error: buildingError } = await supabaseAdmin
-    .from('buildings')
+    .from('personal_project_tenancytrueup_buildings')
     .select('*')
     .eq('id', params.buildingId)
     .maybeSingle();
@@ -77,8 +77,8 @@ export async function getProRataPreview(
   }
 
   const { data: leases, error: leasesError } = await supabaseAdmin
-    .from('leases')
-    .select('id, lease_number, tenant_id, tenants(name)')
+    .from('personal_project_tenancytrueup_leases')
+    .select('id, lease_number, tenant_id, tenants:personal_project_tenancytrueup_leases_tenant_id_fkey!inner(name)')
     .eq('building_id', params.buildingId);
 
   if (leasesError) {
@@ -95,7 +95,7 @@ export async function getProRataPreview(
 
   if (leaseIds.length > 0) {
     const { data, error: leaseUnitsError } = await supabaseAdmin
-      .from('lease_units')
+      .from('personal_project_tenancytrueup_units_leases')
       .select(
         `
         lease_id,
@@ -103,7 +103,7 @@ export async function getProRataPreview(
         end_date,
         usable_area_override,
         rentable_area_override,
-        units(rentable_area, usable_area)
+        personal_project_tenancytrueup_units(rentable_area, usable_area)
         `
       )
       .in('lease_id', leaseIds)

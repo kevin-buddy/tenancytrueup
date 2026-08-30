@@ -8,7 +8,7 @@ export const load: PageServerLoad = async ({ locals }) => {
   const [leasesResponse, tenantsResponse, buildingsResponse] = await Promise.all([
     supabaseAdmin
       .from('personal_project_tenancytrueup_leases')
-      .select('*, tenant:personal_project_tenancytrueup_leases_tenant_id_fkey!inner(name), building:personal_project_tenancytrueup_leases_building_id_fkey!inner(name)')
+      .select('*, tenants:personal_project_tenancytrueup_leases_tenant_id_fkey!inner(name), buildings:personal_project_tenancytrueup_leases_building_id_fkey!inner(name)')
       // .eq('personal_project_tenancytrueup_buildings.user_id', locals.userId)
       .order('created_at', { ascending: false }),
 
