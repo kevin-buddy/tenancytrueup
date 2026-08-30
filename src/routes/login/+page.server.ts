@@ -1,9 +1,15 @@
 import { fail, redirect } from '@sveltejs/kit';
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import bcrypt from 'bcryptjs';
 
 import { supabaseAdmin } from '$lib/server/supabase';
 import { setAuthCookie } from '$lib/server/auth';
+
+export const load: PageServerLoad = async ({ locals }) => {
+  if (locals.userId) {
+    throw redirect(303, '/dashboard');
+  }
+};
 
 export const actions: Actions = {
   default: async ({ request, cookies }) => {
